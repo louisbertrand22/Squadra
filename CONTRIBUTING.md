@@ -242,11 +242,12 @@ Stuck? Here's how to get help:
 
 ### Adding a New Database Table
 
-1. Write SQL in `src/lib/supabase.ts`
-2. Add TypeScript types in `src/types/index.ts`
-3. Add RLS policies for security
-4. Update SUPABASE_SETUP.md
-5. Test with different users
+1. Write SQL schema and add to `SUPABASE_SETUP.md`
+2. Run SQL in Supabase Dashboard → SQL Editor
+3. Add TypeScript types in `src/types/index.ts`
+4. Add RLS policies for security in SQL
+5. Add client API functions in `src/lib/supabase.ts` if needed
+6. Test with different users to verify RLS works
 
 ### Adding a New API Function
 
