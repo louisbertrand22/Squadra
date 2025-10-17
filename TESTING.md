@@ -187,11 +187,11 @@ This error occurs when the app tries to check for over-the-air (OTA) updates but
 ```
 
 Configuration explanation:
-- `enabled: false` - Disables OTA updates completely
-- `checkAutomatically: "ON_ERROR_RECOVERY"` - When combined with `enabled: false`, this prevents any automatic update checks
-- `fallbackToCacheTimeout: 0` - Immediately falls back to cached version if update check fails
+- `enabled: false` - Disables OTA updates completely. When set to false, Expo will not attempt to download or check for updates.
+- `checkAutomatically: "ON_ERROR_RECOVERY"` - This setting is only relevant when updates are enabled, but including it provides a fallback configuration
+- `fallbackToCacheTimeout: 0` - Immediately uses the cached/bundled version
 
-This combination ensures Expo doesn't attempt to download updates at all, which prevents the "Failed to download remote update" error.
+**Why this fixes the error**: The previous configuration was incomplete, which could cause Expo to attempt update checks. Setting `enabled: false` ensures no update checks occur, preventing the "Failed to download remote update" error.
 
 If you still see this error:
 - Clear Metro cache: `npx expo start -c`
