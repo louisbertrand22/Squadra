@@ -59,12 +59,17 @@ export const initDatabase = async () => {
     } catch (error) {
       console.error('Error initializing database:', error);
       db = null; // Reset db if initialization fails
-      initPromise = null; // Reset promise so it can be retried
       throw error;
     }
   })();
 
-  await initPromise;
+  try {
+    await initPromise;
+  } catch (error) {
+    // Reset promise on error so it can be retried
+    initPromise = null;
+    throw error;
+  }
 };
 
 export const getDatabase = () => {
