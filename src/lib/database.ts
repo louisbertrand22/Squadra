@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
 let db: SQLite.SQLiteDatabase | null = null;
-let isInitializing = false;
+let initPromise: Promise<void> | null = null;
 
 export const initDatabase = async () => {
   // If database is already initialized, return immediately
@@ -11,60 +11,60 @@ export const initDatabase = async () => {
   }
 
   // If another initialization is in progress, wait for it
-  if (isInitializing) {
+  if (initPromise) {
     console.log('Database initialization already in progress, waiting...');
-    // Wait for the other initialization to complete
-    while (isInitializing) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
+    await initPromise;
     return;
   }
 
-  try {
-    isInitializing = true;
-    db = await SQLite.openDatabaseAsync('squadra.db');
+  // Start initialization
+  initPromise = (async () => {
+    try {
+      db = await SQLite.openDatabaseAsync('squadra.db');
 
-    // Create local cache tables
-    await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS cached_clubs (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        created_by TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        synced_at TEXT NOT NULL
-      );
+      // Create local cache tables
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS cached_clubs (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          created_by TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          synced_at TEXT NOT NULL
+        );
 
-      CREATE TABLE IF NOT EXISTS cached_teams (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        club_id TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        synced_at TEXT NOT NULL
-      );
+        CREATE TABLE IF NOT EXISTS cached_teams (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          club_id TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          synced_at TEXT NOT NULL
+        );
 
-      CREATE TABLE IF NOT EXISTS cached_memberships (
-        id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL,
-        club_id TEXT,
-        team_id TEXT,
-        role TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        synced_at TEXT NOT NULL
-      );
+        CREATE TABLE IF NOT EXISTS cached_memberships (
+          id TEXT PRIMARY KEY,
+          user_id TEXT NOT NULL,
+          club_id TEXT,
+          team_id TEXT,
+          role TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          synced_at TEXT NOT NULL
+        );
 
-      CREATE INDEX IF NOT EXISTS idx_clubs_created_by ON cached_clubs(created_by);
-      CREATE INDEX IF NOT EXISTS idx_teams_club_id ON cached_teams(club_id);
-      CREATE INDEX IF NOT EXISTS idx_memberships_user_id ON cached_memberships(user_id);
-    `);
+        CREATE INDEX IF NOT EXISTS idx_clubs_created_by ON cached_clubs(created_by);
+        CREATE INDEX IF NOT EXISTS idx_teams_club_id ON cached_teams(club_id);
+        CREATE INDEX IF NOT EXISTS idx_memberships_user_id ON cached_memberships(user_id);
+      `);
 
-    console.log('Database initialized successfully');
-  } catch (error) {
-    console.error('Error initializing database:', error);
-    db = null; // Reset db if initialization fails
-    throw error;
-  } finally {
-    isInitializing = false;
-  }
+      console.log('Database initialized successfully');
+    } catch (error) {
+      console.error('Error initializing database:', error);
+      db = null; // Reset db if initialization fails
+      initPromise = null; // Reset promise so it can be retried
+      throw error;
+    }
+  })();
+
+  await initPromise;
 };
 
 export const getDatabase = () => {
