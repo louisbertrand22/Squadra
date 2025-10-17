@@ -6,7 +6,9 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "tsc --noEmit",
+    "test": "echo \"Run manual tests - see TESTING.md\" && exit 0"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
