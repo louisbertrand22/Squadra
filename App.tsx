@@ -9,11 +9,14 @@ import { useAuthStore } from './src/store/authStore';
 import { Navigation } from './src/navigation/RootNavigator';
 import { initDatabase } from './src/lib/database';
 
-// Initialize Sentry for error tracking
-Sentry.init({
-  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN || '',
-  debug: __DEV__,
-});
+// Initialize Sentry for error tracking (only if DSN is provided)
+const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN || '';
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    debug: __DEV__,
+  });
+}
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -130,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sentry.wrap(App);
+export default sentryDsn ? Sentry.wrap(App) : App;

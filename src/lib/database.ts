@@ -1,9 +1,27 @@
 import * as SQLite from 'expo-sqlite';
 
 let db: SQLite.SQLiteDatabase | null = null;
+let isInitializing = false;
 
 export const initDatabase = async () => {
+  // If database is already initialized, return immediately
+  if (db) {
+    console.log('Database already initialized');
+    return;
+  }
+
+  // If another initialization is in progress, wait for it
+  if (isInitializing) {
+    console.log('Database initialization already in progress, waiting...');
+    // Wait for the other initialization to complete
+    while (isInitializing) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    return;
+  }
+
   try {
+    isInitializing = true;
     db = await SQLite.openDatabaseAsync('squadra.db');
 
     // Create local cache tables
@@ -42,7 +60,10 @@ export const initDatabase = async () => {
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Error initializing database:', error);
+    db = null; // Reset db if initialization fails
     throw error;
+  } finally {
+    isInitializing = false;
   }
 };
 
