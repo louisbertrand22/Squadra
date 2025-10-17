@@ -174,6 +174,30 @@ All Phase 0 requirements are met when:
 
 ## Troubleshooting
 
+### "Failed to download remote update" Error
+This error occurs when the app tries to check for over-the-air (OTA) updates but the configuration is incomplete or conflicting.
+
+**Solution**: The app.json has been properly configured to disable updates:
+```json
+"updates": {
+  "enabled": false,
+  "checkAutomatically": "ON_ERROR_RECOVERY",
+  "fallbackToCacheTimeout": 0
+}
+```
+
+Configuration explanation:
+- `enabled: false` - Disables OTA updates completely. When set to false, Expo will not attempt to download or check for updates.
+- `checkAutomatically: "ON_ERROR_RECOVERY"` - This setting is ignored when updates are disabled, but is included for completeness in case updates are enabled in the future
+- `fallbackToCacheTimeout: 0` - Immediately uses the cached/bundled version
+
+**Why this fixes the error**: Setting `enabled: false` ensures Expo will not attempt any update checks, which prevents the "Failed to download remote update" error from occurring.
+
+If you still see this error:
+- Clear Metro cache: `npx expo start -c`
+- Reinstall dependencies: `rm -rf node_modules && npm install`
+- Clear Expo cache: `rm -rf .expo`
+
 ### Magic Link Not Working
 - Verify Supabase email provider is enabled
 - Check Supabase logs in Dashboard → Authentication → Logs

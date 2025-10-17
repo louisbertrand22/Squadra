@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "squadra-temp",
-    "slug": "squadra-temp",
+    "name": "Squadra",
+    "slug": "squadra",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,8 +13,9 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0,
-      "enabled": false
+      "enabled": false,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "fallbackToCacheTimeout": 0
     },
     "ios": {
       "supportsTablet": true
