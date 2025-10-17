@@ -186,9 +186,12 @@ This error occurs when the app tries to check for over-the-air (OTA) updates but
 }
 ```
 
-- `enabled: false` - Disables OTA updates
-- `checkAutomatically: "ON_ERROR_RECOVERY"` - Only checks for updates on error recovery
-- `fallbackToCacheTimeout: 0` - No timeout for fallback to cache
+Configuration explanation:
+- `enabled: false` - Disables OTA updates completely
+- `checkAutomatically: "ON_ERROR_RECOVERY"` - When combined with `enabled: false`, this prevents any automatic update checks
+- `fallbackToCacheTimeout: 0` - Immediately falls back to cached version if update check fails
+
+This combination ensures Expo doesn't attempt to download updates at all, which prevents the "Failed to download remote update" error.
 
 If you still see this error:
 - Clear Metro cache: `npx expo start -c`
