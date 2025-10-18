@@ -12,6 +12,7 @@ import {
 import { useAuthStore } from '../store/authStore';
 import { supabase } from '../lib/supabase';
 import { cacheUserProfile } from '../lib/database';
+import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 
 const ProfileScreen: React.FC = () => {
   const { user, setUser } = useAuthStore();
@@ -64,15 +65,27 @@ const ProfileScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
+        <View style={styles.header}>
+          <View style={styles.avatarContainer}>
+            <Text style={styles.avatarText}>👤</Text>
+          </View>
+          <Text style={styles.headerTitle}>My Profile</Text>
+          <Text style={styles.headerSubtitle}>Manage your personal information</Text>
+        </View>
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Informations Personnelles</Text>
           
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>Adresse E-mail</Text>
             <View style={styles.emailContainer}>
+              <Text style={styles.emailIcon}>📧</Text>
               <Text style={styles.emailText}>{user?.email}</Text>
             </View>
-            <Text style={styles.helperText}>L'e-mail ne peut pas être modifié</Text>
+            <View style={styles.helperContainer}>
+              <Text style={styles.helperIcon}>🔒</Text>
+              <Text style={styles.helperText}>Email cannot be changed</Text>
+            </View>
           </View>
 
           <View style={styles.fieldContainer}>
@@ -81,7 +94,8 @@ const ProfileScreen: React.FC = () => {
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Entrez votre nom complet"
+              placeholder="Enter your full name"
+              placeholderTextColor={colors.text.tertiary}
               autoCapitalize="words"
               editable={!loading}
             />
@@ -93,7 +107,8 @@ const ProfileScreen: React.FC = () => {
               style={styles.input}
               value={phoneNumber}
               onChangeText={setPhoneNumber}
-              placeholder="Entrez votre numéro de téléphone"
+              placeholder="Enter your phone number"
+              placeholderTextColor={colors.text.tertiary}
               keyboardType="phone-pad"
               editable={!loading}
             />
@@ -104,11 +119,15 @@ const ProfileScreen: React.FC = () => {
           style={[styles.saveButton, loading && styles.saveButtonDisabled]}
           onPress={handleSave}
           disabled={loading}
+          activeOpacity={0.8}
         >
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.saveButtonText}>Enregistrer les Modifications</Text>
+            <>
+              <Text style={styles.saveButtonIcon}>💾</Text>
+              <Text style={styles.saveButtonText}>Save Changes</Text>
+            </>
           )}
         </TouchableOpacity>
       </View>
@@ -119,71 +138,123 @@ const ProfileScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background.secondary,
   },
   content: {
-    padding: 16,
+    padding: spacing.lg,
+  },
+  header: {
+    alignItems: 'center',
+    paddingVertical: spacing.xl,
+  },
+  avatarContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primary.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+    ...shadows.lg,
+  },
+  avatarText: {
+    fontSize: 50,
+  },
+  headerTitle: {
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
+  },
+  headerSubtitle: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
   },
   section: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    backgroundColor: colors.neutral.white,
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+    ...shadows.md,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 16,
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.lg,
   },
   fieldContainer: {
-    marginBottom: 20,
+    marginBottom: spacing.lg,
   },
   label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semibold,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
+    letterSpacing: typography.letterSpacing.wide,
+    textTransform: 'uppercase',
   },
   input: {
-    backgroundColor: '#f9f9f9',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    color: '#333',
+    backgroundColor: colors.background.secondary,
+    borderWidth: 2,
+    borderColor: colors.border.light,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    fontSize: typography.fontSize.base,
+    color: colors.text.primary,
   },
   emailContainer: {
-    backgroundColor: '#f0f0f0',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 12,
+    backgroundColor: colors.background.tertiary,
+    borderWidth: 2,
+    borderColor: colors.border.light,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  emailIcon: {
+    fontSize: typography.fontSize.lg,
+    marginRight: spacing.sm,
   },
   emailText: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: typography.fontSize.base,
+    color: colors.text.secondary,
+    flex: 1,
+  },
+  helperContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  helperIcon: {
+    fontSize: typography.fontSize.xs,
+    marginRight: spacing.xs,
   },
   helperText: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 4,
+    fontSize: typography.fontSize.xs,
+    color: colors.text.tertiary,
   },
   saveButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 16,
-    borderRadius: 8,
+    backgroundColor: colors.primary.main,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    justifyContent: 'center',
+    marginBottom: spacing.lg,
+    ...shadows.md,
   },
   saveButtonDisabled: {
-    backgroundColor: '#B0B0B0',
+    backgroundColor: colors.neutral.gray400,
+  },
+  saveButtonIcon: {
+    fontSize: typography.fontSize.lg,
+    marginRight: spacing.sm,
   },
   saveButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: colors.text.inverse,
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.semibold,
   },
 });
 

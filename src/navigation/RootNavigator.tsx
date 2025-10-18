@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CreateClubScreen from '../screens/CreateClubScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { colors, typography } from '../theme';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -21,7 +22,19 @@ export const Navigation: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.primary.main,
+          },
+          headerTintColor: colors.text.inverse,
+          headerTitleStyle: {
+            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.fontSize.lg,
+          },
+          headerShadowVisible: false,
+        }}
+      >
         {!session ? (
           <Stack.Screen 
             name="Login" 
@@ -33,17 +46,23 @@ export const Navigation: React.FC = () => {
             <Stack.Screen 
               name="Home" 
               component={HomeScreen}
-              options={{ title: 'Squadra' }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen 
               name="CreateClub" 
               component={CreateClubScreen}
-              options={{ title: 'Create Club' }}
+              options={{ 
+                title: 'Create Club',
+                headerBackTitle: 'Back',
+              }}
             />
             <Stack.Screen 
               name="Profile" 
               component={ProfileScreen}
-              options={{ title: 'Profile' }}
+              options={{ 
+                title: 'Profile',
+                headerBackTitle: 'Back',
+              }}
             />
           </>
         )}

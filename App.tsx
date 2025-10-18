@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, ActivityIndicator, StyleSheet, Alert } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Alert, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as SplashScreen from 'expo-splash-screen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Sentry from '@sentry/react-native';
@@ -8,6 +9,7 @@ import { supabase } from './src/lib/supabase';
 import { useAuthStore } from './src/store/authStore';
 import { Navigation } from './src/navigation/RootNavigator';
 import { initDatabase, cacheUserProfile } from './src/lib/database';
+import { colors } from './src/theme';
 
 // Initialize Sentry for error tracking (only if DSN is provided)
 const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN || '';
@@ -125,9 +127,19 @@ function App() {
 
   if (!appIsReady) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
-      </View>
+      <LinearGradient
+        colors={['#EFF6FF', '#DBEAFE', '#BFDBFE']}
+        style={styles.loadingContainer}
+      >
+        <View style={styles.loadingContent}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.iconText}>⚽</Text>
+          </View>
+          <Text style={styles.loadingTitle}>Squadra</Text>
+          <ActivityIndicator size="large" color={colors.primary.main} />
+          <Text style={styles.loadingText}>Loading your teams...</Text>
+        </View>
+      </LinearGradient>
     );
   }
 
@@ -144,7 +156,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+  },
+  loadingContent: {
+    alignItems: 'center',
+  },
+  iconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: colors.neutral.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  iconText: {
+    fontSize: 50,
+  },
+  loadingTitle: {
+    fontSize: 48,
+    fontWeight: '800',
+    color: colors.primary.dark,
+    marginBottom: 32,
+    letterSpacing: -1,
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: colors.text.secondary,
+    fontWeight: '500',
   },
 });
 

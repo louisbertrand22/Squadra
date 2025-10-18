@@ -9,6 +9,7 @@ import {
   RefreshControl,
   Alert,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
@@ -17,6 +18,7 @@ import { useAuthStore } from '../store/authStore';
 import { RootStackParamList } from '../navigation/RootNavigator';
 import { Club } from '../types';
 import { getCachedClubs, cacheClubs } from '../lib/database';
+import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -73,73 +75,125 @@ const HomeScreen: React.FC = () => {
   };
 
   const renderClubItem = ({ item }: { item: Club }) => (
-    <View style={styles.clubItem}>
-      <Text style={styles.clubName}>{item.name}</Text>
-      <Text style={styles.clubDate}>
-        Créé le {new Date(item.created_at).toLocaleDateString('fr-FR')}
-      </Text>
-    </View>
+    <TouchableOpacity style={styles.clubItem} activeOpacity={0.7}>
+      <LinearGradient
+        colors={[colors.primary.light, colors.primary.main]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.clubGradient}
+      >
+        <View style={styles.clubIconContainer}>
+          <Text style={styles.clubIcon}>⚽</Text>
+        </View>
+      </LinearGradient>
+      <View style={styles.clubContent}>
+        <Text style={styles.clubName}>{item.name}</Text>
+        <View style={styles.clubMeta}>
+          <Text style={styles.clubMetaIcon}>📅</Text>
+          <Text style={styles.clubDate}>
+            {new Date(item.created_at).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.clubArrow}>
+        <Text style={styles.clubArrowIcon}>›</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.welcomeText}>Bienvenue</Text>
-          <Text style={styles.emailText}>{user?.name || user?.email}</Text>
-          {!isOnline && (
-            <Text style={styles.offlineText}>📡 Mode Hors ligne</Text>
-          )}
+      <LinearGradient
+        colors={[colors.primary.main, colors.primary.dark]}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.welcomeText}>Welcome Back! 👋</Text>
+            <Text style={styles.emailText}>{user?.email}</Text>
+            {!isOnline && (
+              <View style={styles.offlineIndicator}>
+                <Text style={styles.offlineText}>📡 Offline Mode</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity 
+              style={styles.profileButton} 
+              onPress={() => navigation.navigate('Profile')}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.profileIcon}>👤</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.signOutButton} 
+              onPress={handleSignOut}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.signOutIcon}>🚪</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity 
-            style={styles.profileButton} 
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Text style={styles.profileText}>Profil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-            <Text style={styles.signOutText}>Déconnexion</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </LinearGradient>
 
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>Mes Clubs</Text>
+          <View>
+            <Text style={styles.title}>My Clubs</Text>
+            <Text style={styles.titleSubtext}>
+              {clubs?.length || 0} {clubs?.length === 1 ? 'club' : 'clubs'} total
+            </Text>
+          </View>
           <TouchableOpacity
             style={styles.createButton}
             onPress={() => navigation.navigate('CreateClub')}
+            activeOpacity={0.8}
           >
-            <Text style={styles.createButtonText}>+ Créer</Text>
+            <Text style={styles.createButtonIcon}>+</Text>
+            <Text style={styles.createButtonText}>New Club</Text>
           </TouchableOpacity>
         </View>
 
         {isLoading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.loadingText}>Chargement des clubs...</Text>
+            <ActivityIndicator size="large" color={colors.primary.main} />
+            <Text style={styles.loadingText}>Loading clubs...</Text>
           </View>
         ) : clubs && clubs.length > 0 ? (
           <FlatList
             data={clubs}
             renderItem={renderClubItem}
             keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContainer}
             refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+              <RefreshControl 
+                refreshing={isLoading} 
+                onRefresh={refetch}
+                tintColor={colors.primary.main}
+                colors={[colors.primary.main]}
+              />
             }
           />
         ) : (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyTitle}>Aucun club pour le moment</Text>
+            <View style={styles.emptyIconContainer}>
+              <Text style={styles.emptyIcon}>⚽</Text>
+            </View>
+            <Text style={styles.emptyTitle}>No clubs yet</Text>
             <Text style={styles.emptyText}>
-              Créez votre premier club pour commencer
+              Create your first club to start managing your team
             </Text>
             <TouchableOpacity
               style={styles.createButtonLarge}
               onPress={() => navigation.navigate('CreateClub')}
+              activeOpacity={0.8}
             >
-              <Text style={styles.createButtonLargeText}>Créer un Club</Text>
+              <Text style={styles.createButtonLargeIcon}>+</Text>
+              <Text style={styles.createButtonLargeText}>Create Your First Club</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -151,76 +205,108 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background.secondary,
   },
   header: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    paddingTop: spacing['2xl'],
+    paddingBottom: spacing.lg,
+    paddingHorizontal: spacing.lg,
+  },
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.inverse,
+    marginBottom: spacing.xs,
   },
   emailText: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+    fontSize: typography.fontSize.sm,
+    color: colors.text.inverse,
+    opacity: 0.9,
+  },
+  offlineIndicator: {
+    backgroundColor: colors.warning.main,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.md,
+    marginTop: spacing.sm,
+    alignSelf: 'flex-start',
   },
   offlineText: {
-    fontSize: 12,
-    color: '#ff9800',
-    marginTop: 4,
-    fontWeight: '600',
+    fontSize: typography.fontSize.xs,
+    color: colors.text.inverse,
+    fontWeight: typography.fontWeight.semibold,
   },
   headerButtons: {
     flexDirection: 'row',
-    gap: 8,
+    gap: spacing.sm,
   },
   profileButton: {
-    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    width: 44,
+    height: 44,
+    borderRadius: borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  profileText: {
-    color: '#007AFF',
-    fontSize: 16,
+  profileIcon: {
+    fontSize: typography.fontSize.xl,
   },
   signOutButton: {
-    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    width: 44,
+    height: 44,
+    borderRadius: borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  signOutText: {
-    color: '#007AFF',
-    fontSize: 16,
+  signOutIcon: {
+    fontSize: typography.fontSize.xl,
   },
   content: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
   },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+  },
+  titleSubtext: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    marginTop: spacing.xs,
   },
   createButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+    backgroundColor: colors.primary.main,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    ...shadows.md,
+  },
+  createButtonIcon: {
+    color: colors.text.inverse,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.bold,
+    marginRight: spacing.xs,
   },
   createButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: colors.text.inverse,
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semibold,
   },
   loadingContainer: {
     flex: 1,
@@ -228,56 +314,120 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#666',
+    marginTop: spacing.md,
+    fontSize: typography.fontSize.base,
+    color: colors.text.secondary,
+  },
+  listContainer: {
+    paddingBottom: spacing.lg,
   },
   clubItem: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 2,
+    backgroundColor: colors.neutral.white,
+    borderRadius: borderRadius.xl,
+    marginBottom: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
+    ...shadows.md,
+  },
+  clubGradient: {
+    width: 70,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  clubIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: borderRadius.full,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  clubIcon: {
+    fontSize: typography.fontSize['2xl'],
+  },
+  clubContent: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
   },
   clubName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.semibold,
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
+  },
+  clubMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  clubMetaIcon: {
+    fontSize: typography.fontSize.sm,
+    marginRight: spacing.xs,
   },
   clubDate: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+  },
+  clubArrow: {
+    paddingHorizontal: spacing.md,
+  },
+  clubArrowIcon: {
+    fontSize: typography.fontSize['3xl'],
+    color: colors.text.tertiary,
+    fontWeight: typography.fontWeight.bold,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+    paddingHorizontal: spacing.lg,
+  },
+  emptyIconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.background.tertiary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  emptyIcon: {
+    fontSize: 50,
   },
   emptyTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
   },
   emptyText: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: typography.fontSize.base,
+    color: colors.text.secondary,
     textAlign: 'center',
-    marginBottom: 24,
+    lineHeight: typography.lineHeight.relaxed * typography.fontSize.base,
+    marginBottom: spacing.xl,
   },
   createButtonLarge: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 8,
+    backgroundColor: colors.primary.main,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.xl,
+    flexDirection: 'row',
+    alignItems: 'center',
+    ...shadows.lg,
+  },
+  createButtonLargeIcon: {
+    color: colors.text.inverse,
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    marginRight: spacing.sm,
   },
   createButtonLargeText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
+    color: colors.text.inverse,
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.semibold,
   },
 });
 
