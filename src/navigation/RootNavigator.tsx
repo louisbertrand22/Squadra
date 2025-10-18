@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CreateClubScreen from '../screens/CreateClubScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ClubDetailsScreen from '../screens/ClubDetailsScreen';
 import { colors, typography } from '../theme';
 
 export type RootStackParamList = {
@@ -13,6 +14,7 @@ export type RootStackParamList = {
   Home: undefined;
   CreateClub: undefined;
   Profile: undefined;
+  ClubDetails: { clubId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -61,6 +63,14 @@ export const Navigation: React.FC = () => {
               component={ProfileScreen}
               options={{ 
                 title: 'Profile',
+                headerBackTitle: 'Back',
+              }}
+            />
+            <Stack.Screen 
+              name="ClubDetails" 
+              component={ClubDetailsScreen}
+              options={{ 
+                title: 'Club Details',
                 headerBackTitle: 'Back',
               }}
             />
