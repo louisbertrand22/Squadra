@@ -21,7 +21,7 @@ export const initDatabase = async () => {
       return;
     } catch (error) {
       console.error('Error while waiting for database initialization:', error);
-      // Previous initialization failed, will fall through to retry
+      // Previous initialization failed, allowing retry below
       console.log('Previous initialization failed, will retry...');
     }
   }
