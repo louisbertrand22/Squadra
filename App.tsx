@@ -7,7 +7,7 @@ import * as Sentry from '@sentry/react-native';
 import { supabase } from './src/lib/supabase';
 import { useAuthStore } from './src/store/authStore';
 import { Navigation } from './src/navigation/RootNavigator';
-import { initDatabase } from './src/lib/database';
+import { initDatabase, cacheUserProfile, getCachedUserProfile } from './src/lib/database';
 
 // Initialize Sentry for error tracking (only if DSN is provided)
 const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN || '';
@@ -56,6 +56,8 @@ function App() {
           
           if (userData) {
             setUser(userData);
+            // Cache user profile locally
+            await cacheUserProfile(userData);
           }
         }
 
@@ -73,6 +75,8 @@ function App() {
               
               if (userData) {
                 setUser(userData);
+                // Cache user profile locally
+                await cacheUserProfile(userData);
               }
             } else {
               setUser(null);

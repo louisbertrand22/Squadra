@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useAuthStore } from '../store/authStore';
 import { supabase } from '../lib/supabase';
+import { cacheUserProfile } from '../lib/database';
 
 const ProfileScreen: React.FC = () => {
   const { user, setUser } = useAuthStore();
@@ -47,6 +48,8 @@ const ProfileScreen: React.FC = () => {
       // Update the user in the auth store
       if (data) {
         setUser(data);
+        // Cache user profile locally
+        await cacheUserProfile(data);
       }
 
       Alert.alert('Success', 'Profile updated successfully!');
