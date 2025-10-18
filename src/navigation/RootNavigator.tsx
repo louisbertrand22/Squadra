@@ -5,11 +5,13 @@ import { useAuthStore } from '../store/authStore';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CreateClubScreen from '../screens/CreateClubScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   CreateClub: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +39,11 @@ export const Navigation: React.FC = () => {
               name="CreateClub" 
               component={CreateClubScreen}
               options={{ title: 'Create Club' }}
+            />
+            <Stack.Screen 
+              name="Profile" 
+              component={ProfileScreen}
+              options={{ title: 'Profile' }}
             />
           </>
         )}
