@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { RootStackParamList } from '../navigation/RootNavigator';
+import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 
 type CreateClubScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -64,48 +66,68 @@ const CreateClubScreen: React.FC = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.content}>
-        <Text style={styles.title}>Create a New Club</Text>
-        <Text style={styles.subtitle}>
-          As the creator, you'll be the admin of this club
-        </Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.content}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.iconText}>⚽</Text>
+          </View>
+          
+          <Text style={styles.title}>Create a New Club</Text>
+          <Text style={styles.subtitle}>
+            As the creator, you'll be the admin of this club
+          </Text>
 
-        <View style={styles.form}>
-          <Text style={styles.label}>Club Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter club name"
-            placeholderTextColor="#999"
-            value={clubName}
-            onChangeText={setClubName}
-            autoFocus
-            editable={!createClubMutation.isPending}
-          />
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Club Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="e.g., Manchester United FC"
+                placeholderTextColor={colors.text.tertiary}
+                value={clubName}
+                onChangeText={setClubName}
+                autoFocus
+                editable={!createClubMutation.isPending}
+              />
+            </View>
 
-          <TouchableOpacity
-            style={[
-              styles.button,
-              createClubMutation.isPending && styles.buttonDisabled,
-            ]}
-            onPress={handleCreateClub}
-            disabled={createClubMutation.isPending}
-          >
-            {createClubMutation.isPending ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.buttonText}>Create Club</Text>
-            )}
-          </TouchableOpacity>
+            <View style={styles.infoBox}>
+              <Text style={styles.infoIcon}>ℹ️</Text>
+              <Text style={styles.infoText}>
+                You can add teams, members, and manage schedules after creating your club
+              </Text>
+            </View>
 
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => navigation.goBack()}
-            disabled={createClubMutation.isPending}
-          >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                createClubMutation.isPending && styles.buttonDisabled,
+              ]}
+              onPress={handleCreateClub}
+              disabled={createClubMutation.isPending}
+              activeOpacity={0.8}
+            >
+              {createClubMutation.isPending ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <>
+                  <Text style={styles.buttonIcon}>✨</Text>
+                  <Text style={styles.buttonText}>Create Club</Text>
+                </>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => navigation.goBack()}
+              disabled={createClubMutation.isPending}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -113,67 +135,118 @@ const CreateClubScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background.secondary,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   content: {
     flex: 1,
-    padding: 24,
+    padding: spacing.lg,
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primary.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: spacing.lg,
+    ...shadows.lg,
+  },
+  iconText: {
+    fontSize: 40,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
+    fontSize: typography.fontSize['3xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 32,
+    fontSize: typography.fontSize.base,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: spacing.xl,
+    lineHeight: typography.lineHeight.relaxed * typography.fontSize.base,
   },
   form: {
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 12,
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
+    backgroundColor: colors.neutral.white,
+    padding: spacing.xl,
+    borderRadius: borderRadius.xl,
+    ...shadows.lg,
+  },
+  inputContainer: {
+    marginBottom: spacing.md,
   },
   label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semibold,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
+    letterSpacing: typography.letterSpacing.wide,
+    textTransform: 'uppercase',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: colors.border.light,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    fontSize: typography.fontSize.base,
+    backgroundColor: colors.background.secondary,
+    color: colors.text.primary,
+  },
+  infoBox: {
+    backgroundColor: colors.info.bg,
+    padding: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: spacing.lg,
+  },
+  infoIcon: {
+    fontSize: typography.fontSize.lg,
+    marginRight: spacing.sm,
+  },
+  infoText: {
+    flex: 1,
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    lineHeight: typography.lineHeight.relaxed * typography.fontSize.sm,
   },
   button: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 8,
+    backgroundColor: colors.primary.main,
+    padding: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    ...shadows.md,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
+  buttonIcon: {
+    fontSize: typography.fontSize.lg,
+    marginRight: spacing.sm,
+  },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: colors.text.inverse,
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.semibold,
   },
   cancelButton: {
-    padding: 12,
+    padding: spacing.md,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
+    color: colors.primary.main,
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.medium,
   },
 });
 
