@@ -41,18 +41,18 @@ const CreateClubScreen: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clubs'] });
-      Alert.alert('Success', 'Club created successfully!', [
+      Alert.alert('Succès', 'Club créé avec succès !', [
         { text: 'OK', onPress: () => navigation.navigate('Home') },
       ]);
     },
     onError: (error: any) => {
-      Alert.alert('Error', error.message || 'Failed to create club');
+      Alert.alert('Erreur', error.message || 'Échec de la création du club');
     },
   });
 
   const handleCreateClub = () => {
     if (!clubName.trim()) {
-      Alert.alert('Error', 'Please enter a club name');
+      Alert.alert('Erreur', 'Veuillez entrer un nom de club');
       return;
     }
 
@@ -65,16 +65,16 @@ const CreateClubScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.content}>
-        <Text style={styles.title}>Create a New Club</Text>
+        <Text style={styles.title}>Créer un Nouveau Club</Text>
         <Text style={styles.subtitle}>
-          As the creator, you'll be the admin of this club
+          En tant que créateur, vous serez l'administrateur de ce club
         </Text>
 
         <View style={styles.form}>
-          <Text style={styles.label}>Club Name</Text>
+          <Text style={styles.label}>Nom du Club</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter club name"
+            placeholder="Entrez le nom du club"
             placeholderTextColor="#999"
             value={clubName}
             onChangeText={setClubName}
@@ -93,7 +93,7 @@ const CreateClubScreen: React.FC = () => {
             {createClubMutation.isPending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.buttonText}>Create Club</Text>
+              <Text style={styles.buttonText}>Créer le Club</Text>
             )}
           </TouchableOpacity>
 
@@ -102,7 +102,7 @@ const CreateClubScreen: React.FC = () => {
             onPress={() => navigation.goBack()}
             disabled={createClubMutation.isPending}
           >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
+            <Text style={styles.cancelButtonText}>Annuler</Text>
           </TouchableOpacity>
         </View>
       </View>
