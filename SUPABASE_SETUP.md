@@ -235,4 +235,19 @@ After running the SQL, verify that:
 3. Configure email templates if desired (optional)
 4. Save changes
 
+## Configure Redirect URLs
+
+To enable proper authentication redirects in your Expo app:
+
+1. Go to **Authentication** → **URL Configuration**
+2. Add the following redirect URLs:
+   - For Expo Go during development: `exp://192.168.x.x:8081` (replace with your local IP shown in Expo console)
+   - Generic Expo scheme: `exp://`
+   - Production app scheme: `squadra://`
+   - For web: `http://localhost:8081`
+3. Set the **Site URL** to your production domain (or `http://localhost:8081` for development)
+4. Save changes
+
+**Note**: The app now automatically generates the correct redirect URL at runtime using `expo-linking`, so authentication will work across different development environments (Expo Go, web, iOS, Android) without manual configuration changes.
+
 Your database is now ready for use with Squadra!
