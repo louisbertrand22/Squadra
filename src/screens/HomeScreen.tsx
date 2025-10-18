@@ -55,18 +55,18 @@ const HomeScreen: React.FC = () => {
 
   const handleSignOut = async () => {
     Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
+      'Déconnexion',
+      'Êtes-vous sûr de vouloir vous déconnecter ?',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Annuler', style: 'cancel' },
         {
-          text: 'Sign Out',
+          text: 'Déconnexion',
           style: 'destructive',
           onPress: async () => {
             try {
               await signOut();
             } catch (error: any) {
-              Alert.alert('Error', error.message || 'Failed to sign out');
+              Alert.alert('Erreur', error.message || 'Échec de la déconnexion');
             }
           },
         },

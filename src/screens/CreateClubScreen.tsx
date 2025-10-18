@@ -43,18 +43,18 @@ const CreateClubScreen: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clubs'] });
-      Alert.alert('Success', 'Club created successfully!', [
+      Alert.alert('Succès', 'Club créé avec succès !', [
         { text: 'OK', onPress: () => navigation.navigate('Home') },
       ]);
     },
     onError: (error: any) => {
-      Alert.alert('Error', error.message || 'Failed to create club');
+      Alert.alert('Erreur', error.message || 'Échec de la création du club');
     },
   });
 
   const handleCreateClub = () => {
     if (!clubName.trim()) {
-      Alert.alert('Error', 'Please enter a club name');
+      Alert.alert('Erreur', 'Veuillez entrer un nom de club');
       return;
     }
 

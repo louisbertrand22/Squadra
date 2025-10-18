@@ -18,18 +18,18 @@ const LoginScreen: React.FC = () => {
 
   const handleSignIn = async () => {
     if (!email.trim()) {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert('Erreur', 'Veuillez entrer votre adresse e-mail');
       return;
     }
 
     try {
       await signInWithEmail(email.trim());
       Alert.alert(
-        'Check your email',
-        'We sent you a magic link to sign in. Please check your email.'
+        'Vérifiez votre e-mail',
+        'Nous vous avons envoyé un lien magique pour vous connecter. Veuillez vérifier votre e-mail.'
       );
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to send magic link');
+      Alert.alert('Erreur', error.message || 'Échec de l\'envoi du lien magique');
     }
   };
 

@@ -53,10 +53,10 @@ const ProfileScreen: React.FC = () => {
         await cacheUserProfile(data);
       }
 
-      Alert.alert('Success', 'Profile updated successfully!');
+      Alert.alert('Succès', 'Profil mis à jour avec succès !');
     } catch (error: any) {
       console.error('Error updating profile:', error);
-      Alert.alert('Error', error.message || 'Failed to update profile');
+      Alert.alert('Erreur', error.message || 'Échec de la mise à jour du profil');
     } finally {
       setLoading(false);
     }
@@ -74,10 +74,10 @@ const ProfileScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>Informations Personnelles</Text>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Email Address</Text>
+            <Text style={styles.label}>Adresse E-mail</Text>
             <View style={styles.emailContainer}>
               <Text style={styles.emailIcon}>📧</Text>
               <Text style={styles.emailText}>{user?.email}</Text>
@@ -89,7 +89,7 @@ const ProfileScreen: React.FC = () => {
           </View>
 
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>Nom Complet</Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -102,7 +102,7 @@ const ProfileScreen: React.FC = () => {
           </View>
 
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
+            <Text style={styles.label}>Numéro de Téléphone</Text>
             <TextInput
               style={styles.input}
               value={phoneNumber}

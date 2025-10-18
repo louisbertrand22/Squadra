@@ -199,10 +199,34 @@ If you still see this error:
 - Clear Expo cache: `rm -rf .expo`
 
 ### Magic Link Not Working
-- Verify Supabase email provider is enabled
-- Check Supabase logs in Dashboard → Authentication → Logs
-- Try with a different email provider
-- Use a physical device instead of simulator
+
+#### If magic link doesn't redirect back to app:
+
+1. **Check Supabase URL Configuration**
+   - Go to Supabase Dashboard → Authentication → URL Configuration
+   - Verify Site URL is set (e.g., `http://localhost:3000` for development)
+   - Verify Redirect URLs include the platform you're testing:
+     - Web: `http://localhost:3000`
+     - Mobile: `squadra://*`
+     - Expo Go: `exp://YOUR_IP:8081`
+   - See [SUPABASE_DASHBOARD_GUIDE.md](SUPABASE_DASHBOARD_GUIDE.md) for detailed instructions
+
+2. **Check Deep Linking Configuration (Mobile)**
+   - Verify `app.json` has `"scheme": "squadra"`
+   - For iOS: Reinstall the app after changing deep link config
+   - For Android: Clear app data and reinstall after changing config
+
+3. **Check Environment Variables**
+   - Verify `.env` file exists and has `EXPO_PUBLIC_AUTH_REDIRECT_URL` set
+   - For web: Should be `http://localhost:3000`
+   - Restart the development server after changing `.env`
+
+4. **Other Checks**
+   - Verify Supabase email provider is enabled
+   - Check Supabase logs in Dashboard → Authentication → Logs
+   - Try with a different email provider
+   - Use a physical device instead of simulator
+   - Check the [URL_CONFIGURATION.md](URL_CONFIGURATION.md) troubleshooting section
 
 ### Can't Create Club
 - Verify user is logged in
