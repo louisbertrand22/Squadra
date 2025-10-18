@@ -91,9 +91,17 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.offlineText}>📡 Offline Mode</Text>
           )}
         </View>
-        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-          <Text style={styles.signOutText}>Sign Out</Text>
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity 
+            style={styles.profileButton} 
+            onPress={() => navigation.navigate('Profile')}
+          >
+            <Text style={styles.profileText}>Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+            <Text style={styles.signOutText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.content}>
@@ -169,6 +177,17 @@ const styles = StyleSheet.create({
     color: '#ff9800',
     marginTop: 4,
     fontWeight: '600',
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  profileButton: {
+    padding: 8,
+  },
+  profileText: {
+    color: '#007AFF',
+    fontSize: 16,
   },
   signOutButton: {
     padding: 8,
