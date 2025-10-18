@@ -295,6 +295,12 @@ squadra://*
 3. For production apps, ensure the app is properly signed and published
 4. Verify network connectivity on the failing device
 
+## Related Documentation
+
+- **[SUPABASE_DASHBOARD_GUIDE.md](SUPABASE_DASHBOARD_GUIDE.md)** - Visual guide showing exactly where to configure URLs in Supabase
+- **[SUPABASE_URL_EXAMPLES.md](SUPABASE_URL_EXAMPLES.md)** - Concrete examples for different scenarios (dev, prod, web-only, mobile-only)
+- **[SUPABASE_SETUP.md](SUPABASE_SETUP.md)** - Complete database and authentication setup instructions
+
 ## Additional Resources
 
 - [Supabase Auth Documentation](https://supabase.com/docs/guides/auth)
