@@ -86,16 +86,16 @@ colors.text.inverse     // #FFFFFF - Text on dark backgrounds
 A modular scale ensures visual hierarchy and readability.
 
 ```typescript
-typography.fontSize.xs    // 12px
-typography.fontSize.sm    // 14px
-typography.fontSize.base  // 16px - Body text
-typography.fontSize.lg    // 18px
-typography.fontSize.xl    // 20px
-typography.fontSize['2xl'] // 24px
-typography.fontSize['3xl'] // 28px
-typography.fontSize['4xl'] // 32px
-typography.fontSize['5xl'] // 40px
-typography.fontSize['6xl'] // 48px - Large titles
+typography.fontSize.xs           // 12px
+typography.fontSize.sm           // 14px
+typography.fontSize.base         // 16px - Body text
+typography.fontSize.lg           // 18px
+typography.fontSize.xl           // 20px
+typography.fontSize['2xl']       // 24px
+typography.fontSize['3xl']       // 28px
+typography.fontSize['4xl']       // 32px
+typography.fontSize['5xl']       // 40px
+typography.fontSize['6xl']       // 48px - Large titles
 ```
 
 ### Font Weights
@@ -128,14 +128,14 @@ typography.lineHeight.relaxed // 1.75 - Long-form content
 Consistent spacing creates rhythm and hierarchy.
 
 ```typescript
-spacing.xs    // 4px
-spacing.sm    // 8px
-spacing.md    // 16px - Most common
-spacing.lg    // 24px
-spacing.xl    // 32px
-spacing['2xl'] // 40px
-spacing['3xl'] // 48px
-spacing['4xl'] // 64px
+spacing.xs           // 4px
+spacing.sm           // 8px
+spacing.md           // 16px - Most common
+spacing.lg           // 24px
+spacing.xl           // 32px
+spacing['2xl']       // 40px
+spacing['3xl']       // 48px
+spacing['4xl']       // 64px
 ```
 
 **Usage:**
@@ -146,13 +146,13 @@ spacing['4xl'] // 64px
 ### Border Radius
 
 ```typescript
-borderRadius.none  // 0
-borderRadius.sm    // 4px
-borderRadius.md    // 8px
-borderRadius.lg    // 12px - Most common
-borderRadius.xl    // 16px
-borderRadius['2xl'] // 24px
-borderRadius.full  // 9999px - Circles
+borderRadius.none        // 0
+borderRadius.sm          // 4px
+borderRadius.md          // 8px
+borderRadius.lg          // 12px - Most common
+borderRadius.xl          // 16px
+borderRadius['2xl']      // 24px
+borderRadius.full        // 9999px - Circles
 ```
 
 **Usage:**
@@ -282,11 +282,24 @@ Use emojis for quick, accessible icons.
 ✅ Import theme values instead of hardcoding
 ```typescript
 // ✅ Good
-import { colors, spacing } from '../theme';
-padding: spacing.md
+import { colors, spacing, borderRadius } from '../theme';
+
+const styles = StyleSheet.create({
+  container: {
+    padding: spacing.md,
+    backgroundColor: colors.background.primary,
+    borderRadius: borderRadius.lg,
+  },
+});
 
 // ❌ Bad
-padding: 16
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+  },
+});
 ```
 
 ✅ Use consistent spacing throughout
