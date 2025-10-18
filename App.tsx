@@ -93,7 +93,9 @@ function App() {
         };
       } catch (error) {
         console.error('Error initializing app:', error);
-        Sentry.captureException(error);
+        if (sentryDsn) {
+          Sentry.captureException(error);
+        }
         Alert.alert(
           'Initialization Error',
           'Failed to initialize the app. Please restart the application.'
