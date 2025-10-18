@@ -43,3 +43,31 @@ export const parseBoolean = (value: string | undefined, defaultValue: boolean): 
 export const parseString = (value: string | undefined, defaultValue: string): string => {
   return value || defaultValue;
 };
+
+/**
+ * Converts a string configuration value to a number.
+ * This is useful for environment variables that represent numeric values.
+ * 
+ * @param value - The configuration value (string from env or undefined)
+ * @param defaultValue - The default number value to use if value is undefined or invalid
+ * @returns The number value
+ * 
+ * @example
+ * // From .env: EXPO_PUBLIC_TIMEOUT=5000
+ * const timeout = parseNumber(process.env.EXPO_PUBLIC_TIMEOUT, 3000);
+ * // Returns: 5000 (number, not string)
+ */
+export const parseNumber = (value: string | undefined, defaultValue: number): number => {
+  if (value === undefined) {
+    return defaultValue;
+  }
+  
+  const parsed = Number(value);
+  
+  // Return default if parsing results in NaN
+  if (isNaN(parsed)) {
+    return defaultValue;
+  }
+  
+  return parsed;
+};
