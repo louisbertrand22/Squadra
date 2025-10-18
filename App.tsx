@@ -7,7 +7,7 @@ import * as Sentry from '@sentry/react-native';
 import { supabase } from './src/lib/supabase';
 import { useAuthStore } from './src/store/authStore';
 import { Navigation } from './src/navigation/RootNavigator';
-import { initDatabase, cacheUserProfile, getCachedUserProfile } from './src/lib/database';
+import { initDatabase, cacheUserProfile } from './src/lib/database';
 
 // Initialize Sentry for error tracking (only if DSN is provided)
 const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN || '';
