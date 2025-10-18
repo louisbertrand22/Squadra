@@ -16,18 +16,18 @@ const LoginScreen: React.FC = () => {
 
   const handleSignIn = async () => {
     if (!email.trim()) {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert('Erreur', 'Veuillez entrer votre adresse e-mail');
       return;
     }
 
     try {
       await signInWithEmail(email.trim());
       Alert.alert(
-        'Check your email',
-        'We sent you a magic link to sign in. Please check your email.'
+        'Vérifiez votre e-mail',
+        'Nous vous avons envoyé un lien magique pour vous connecter. Veuillez vérifier votre e-mail.'
       );
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to send magic link');
+      Alert.alert('Erreur', error.message || 'Échec de l\'envoi du lien magique');
     }
   };
 
@@ -35,13 +35,13 @@ const LoginScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Squadra</Text>
-        <Text style={styles.subtitle}>Team Management Made Simple</Text>
+        <Text style={styles.subtitle}>Gestion d'Équipe Simplifiée</Text>
 
         <View style={styles.form}>
-          <Text style={styles.label}>Email Address</Text>
+          <Text style={styles.label}>Adresse E-mail</Text>
           <TextInput
             style={styles.input}
-            placeholder="coach@example.com"
+            placeholder="coach@exemple.com"
             placeholderTextColor="#999"
             value={email}
             onChangeText={setEmail}
@@ -59,12 +59,12 @@ const LoginScreen: React.FC = () => {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.buttonText}>Send Magic Link</Text>
+              <Text style={styles.buttonText}>Envoyer le Lien Magique</Text>
             )}
           </TouchableOpacity>
 
           <Text style={styles.helpText}>
-            We'll send you a magic link to sign in without a password
+            Nous vous enverrons un lien magique pour vous connecter sans mot de passe
           </Text>
         </View>
       </View>

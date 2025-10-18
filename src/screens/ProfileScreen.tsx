@@ -52,10 +52,10 @@ const ProfileScreen: React.FC = () => {
         await cacheUserProfile(data);
       }
 
-      Alert.alert('Success', 'Profile updated successfully!');
+      Alert.alert('Succès', 'Profil mis à jour avec succès !');
     } catch (error: any) {
       console.error('Error updating profile:', error);
-      Alert.alert('Error', error.message || 'Failed to update profile');
+      Alert.alert('Erreur', error.message || 'Échec de la mise à jour du profil');
     } finally {
       setLoading(false);
     }
@@ -65,35 +65,35 @@ const ProfileScreen: React.FC = () => {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>Informations Personnelles</Text>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Email Address</Text>
+            <Text style={styles.label}>Adresse E-mail</Text>
             <View style={styles.emailContainer}>
               <Text style={styles.emailText}>{user?.email}</Text>
             </View>
-            <Text style={styles.helperText}>Email cannot be changed</Text>
+            <Text style={styles.helperText}>L'e-mail ne peut pas être modifié</Text>
           </View>
 
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>Nom Complet</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Enter your full name"
+              placeholder="Entrez votre nom complet"
               autoCapitalize="words"
               editable={!loading}
             />
           </View>
 
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
+            <Text style={styles.label}>Numéro de Téléphone</Text>
             <TextInput
               style={styles.input}
               value={phoneNumber}
               onChangeText={setPhoneNumber}
-              placeholder="Enter your phone number"
+              placeholder="Entrez votre numéro de téléphone"
               keyboardType="phone-pad"
               editable={!loading}
             />
@@ -108,7 +108,7 @@ const ProfileScreen: React.FC = () => {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.saveButtonText}>Save Changes</Text>
+            <Text style={styles.saveButtonText}>Enregistrer les Modifications</Text>
           )}
         </TouchableOpacity>
       </View>
