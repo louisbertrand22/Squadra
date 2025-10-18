@@ -53,18 +53,18 @@ const HomeScreen: React.FC = () => {
 
   const handleSignOut = async () => {
     Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
+      'Déconnexion',
+      'Êtes-vous sûr de vouloir vous déconnecter ?',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Annuler', style: 'cancel' },
         {
-          text: 'Sign Out',
+          text: 'Déconnexion',
           style: 'destructive',
           onPress: async () => {
             try {
               await signOut();
             } catch (error: any) {
-              Alert.alert('Error', error.message || 'Failed to sign out');
+              Alert.alert('Erreur', error.message || 'Échec de la déconnexion');
             }
           },
         },
@@ -76,7 +76,7 @@ const HomeScreen: React.FC = () => {
     <View style={styles.clubItem}>
       <Text style={styles.clubName}>{item.name}</Text>
       <Text style={styles.clubDate}>
-        Created {new Date(item.created_at).toLocaleDateString()}
+        Créé le {new Date(item.created_at).toLocaleDateString('fr-FR')}
       </Text>
     </View>
   );
@@ -85,10 +85,10 @@ const HomeScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.welcomeText}>Welcome!</Text>
-          <Text style={styles.emailText}>{user?.email}</Text>
+          <Text style={styles.welcomeText}>Bienvenue</Text>
+          <Text style={styles.emailText}>{user?.name || user?.email}</Text>
           {!isOnline && (
-            <Text style={styles.offlineText}>📡 Offline Mode</Text>
+            <Text style={styles.offlineText}>📡 Mode Hors ligne</Text>
           )}
         </View>
         <View style={styles.headerButtons}>
@@ -96,29 +96,29 @@ const HomeScreen: React.FC = () => {
             style={styles.profileButton} 
             onPress={() => navigation.navigate('Profile')}
           >
-            <Text style={styles.profileText}>Profile</Text>
+            <Text style={styles.profileText}>Profil</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-            <Text style={styles.signOutText}>Sign Out</Text>
+            <Text style={styles.signOutText}>Déconnexion</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>My Clubs</Text>
+          <Text style={styles.title}>Mes Clubs</Text>
           <TouchableOpacity
             style={styles.createButton}
             onPress={() => navigation.navigate('CreateClub')}
           >
-            <Text style={styles.createButtonText}>+ Create</Text>
+            <Text style={styles.createButtonText}>+ Créer</Text>
           </TouchableOpacity>
         </View>
 
         {isLoading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.loadingText}>Loading clubs...</Text>
+            <Text style={styles.loadingText}>Chargement des clubs...</Text>
           </View>
         ) : clubs && clubs.length > 0 ? (
           <FlatList
@@ -131,15 +131,15 @@ const HomeScreen: React.FC = () => {
           />
         ) : (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyTitle}>No clubs yet</Text>
+            <Text style={styles.emptyTitle}>Aucun club pour le moment</Text>
             <Text style={styles.emptyText}>
-              Create your first club to get started
+              Créez votre premier club pour commencer
             </Text>
             <TouchableOpacity
               style={styles.createButtonLarge}
               onPress={() => navigation.navigate('CreateClub')}
             >
-              <Text style={styles.createButtonLargeText}>Create Club</Text>
+              <Text style={styles.createButtonLargeText}>Créer un Club</Text>
             </TouchableOpacity>
           </View>
         )}

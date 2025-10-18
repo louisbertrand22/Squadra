@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Platform } from 'react-native';
+import * as Linking from 'expo-linking';
 import { supabase } from '../lib/supabase';
 import { AuthState, User } from '../types';
 
@@ -29,6 +30,28 @@ export const useAuthStore = create<AuthState>((set) => ({
       // Success message will be shown in UI
     } catch (error) {
       console.error('Error signing in:', error);
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  signInWithOAuth: async (provider: 'google' | 'github' | 'apple') => {
+    try {
+      set({ loading: true });
+      // Get the dynamic redirect URL for the Expo app
+      const redirectUrl = Linking.createURL('/');
+      console.log('OAuth Redirect URL:', redirectUrl);
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: redirectUrl,
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in with OAuth:', error);
       throw error;
     } finally {
       set({ loading: false });

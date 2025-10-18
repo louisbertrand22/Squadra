@@ -70,7 +70,7 @@ npm install
 2. Go to Project Settings → API to get your:
    - Project URL
    - Anon/Public Key
-3. Go to SQL Editor and run the SQL schema from `src/lib/supabase.ts` (the `DATABASE_SETUP_SQL` constant)
+3. Go to SQL Editor and run the SQL schema from `SUPABASE_SETUP.md`
 4. Enable email authentication in Authentication → Providers
 5. **Configure authentication URLs** - This is crucial for magic link authentication to work!
    - See [SUPABASE_DASHBOARD_GUIDE.md](SUPABASE_DASHBOARD_GUIDE.md) for step-by-step instructions
