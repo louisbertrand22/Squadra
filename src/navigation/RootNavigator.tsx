@@ -5,7 +5,9 @@ import { useAuthStore } from '../store/authStore';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CreateClubScreen from '../screens/CreateClubScreen';
+import CreateTeamScreen from '../screens/CreateTeamScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import TeamDetailsScreen from '../screens/TeamDetailsScreen';
 import ClubDetailsScreen from '../screens/ClubDetailsScreen';
 import { colors, typography } from '../theme';
 
@@ -13,8 +15,10 @@ export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   CreateClub: undefined;
+  CreateTeam: { clubId?: string } | undefined;
   Profile: undefined;
   ClubDetails: { clubId: string };
+  TeamDetails: { teamId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -58,6 +62,14 @@ export const Navigation: React.FC = () => {
                 headerBackTitle: 'Back',
               }}
             />
+            <Stack.Screen
+              name="CreateTeam"
+              component={CreateTeamScreen}
+              options={{
+                title: 'Create Team',
+                headerBackTitle: 'Back',
+              }}
+            />
             <Stack.Screen 
               name="Profile" 
               component={ProfileScreen}
@@ -71,6 +83,14 @@ export const Navigation: React.FC = () => {
               component={ClubDetailsScreen}
               options={{ 
                 title: 'Club Details',
+                headerBackTitle: 'Back',
+              }}
+            />
+            <Stack.Screen 
+              name="TeamDetails" 
+              component={TeamDetailsScreen}
+              options={{ 
+                title: 'Team Details',
                 headerBackTitle: 'Back',
               }}
             />

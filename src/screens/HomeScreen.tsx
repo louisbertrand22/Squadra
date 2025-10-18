@@ -118,7 +118,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.headerContent}>
           <View>
             <Text style={styles.welcomeText}>Welcome Back! 👋</Text>
-            <Text style={styles.emailText}>{user?.email}</Text>
+            <Text style={styles.emailText}>{user?.name || user?.email}</Text>
             {!isOnline && (
               <View style={styles.offlineIndicator}>
                 <Text style={styles.offlineText}>📡 Offline Mode</Text>

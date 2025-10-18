@@ -18,6 +18,11 @@ export interface Team {
   name: string;
   club_id: string;
   created_at: string;
+  created_by: string;
+  sport: string;
+  category: string;
+  level: string;
+  season: string;
 }
 
 export interface Membership {
