@@ -34,6 +34,7 @@ export interface AuthState {
   session: any | null;
   loading: boolean;
   signInWithEmail: (email: string) => Promise<void>;
+  signInWithOAuth: (provider: 'google' | 'github' | 'apple') => Promise<void>;
   signOut: () => Promise<void>;
   setUser: (user: User | null) => void;
   setSession: (session: any | null) => void;
