@@ -51,36 +51,35 @@ By having:
 ## Visual Reference
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ Supabase Dashboard                                  │
-│ Authentication → URL Configuration                  │
-└─────────────────────────────────────────────────────┘
+========================================================
+Supabase Dashboard
+Authentication -> URL Configuration
+========================================================
 
-┌─────────────────────────────────────────────────────┐
-│ Site URL                                            │
-│ ┌─────────────────────────────────────────────┐   │
-│ │ http://localhost:3000                       │   │  ← Put web URL here
-│ └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
+--------------------------------------------------------
+Site URL
+--------------------------------------------------------
+  http://localhost:3000            <- Put web URL here
+--------------------------------------------------------
 
-┌─────────────────────────────────────────────────────┐
-│ Redirect URLs                                       │
-│                                                     │
-│ • http://localhost:3000         [X]                │  ← Web
-│ • squadra://*                   [X]                │  ← Mobile
-│ • exp://192.168.1.28:8081       [X]                │  ← Expo Go
-│                                                     │
-│                      [+ Add URL]                    │
-└─────────────────────────────────────────────────────┘
+--------------------------------------------------------
+Redirect URLs
+--------------------------------------------------------
+  • http://localhost:3000    [X]   <- Web
+  • squadra://*              [X]   <- Mobile
+  • exp://192.168.1.28:8081  [X]   <- Expo Go
+
+                  [+ Add URL]
+--------------------------------------------------------
 ```
 
 ## What You're Seeing in Your Screenshot
 
 In the screenshot you shared, you have:
-- **Site URL:** `http://localhost:3000` ✅ Good!
+- **Site URL:** `http://localhost:3000` [OK] Good!
 - **Redirect URLs:** 
-  - `localhost:3000` ⚠️ Missing `http://` protocol
-  - `exp://192.168.1.28:8081` ✅ Good for Expo!
+  - `localhost:3000` [WARNING] Missing `http://` protocol
+  - `exp://192.168.1.28:8081` [OK] Good for Expo!
 
 ### What's Missing
 
@@ -106,14 +105,14 @@ Then click **Save changes** (green button bottom right).
 
 ### Web
 1. Run `npm run web`
-2. Enter email → Click magic link
-3. Should open in browser at `http://localhost:3000` ✓
+2. Enter email and click magic link
+3. Should open in browser at `http://localhost:3000` [OK]
 
 ### Mobile
 1. Run `npm start`
 2. Open in Expo Go
-3. Enter email → Click magic link
-4. Should open app via `squadra://` ✓
+3. Enter email and click magic link
+4. Should open app via `squadra://` [OK]
 
 ## Need More Help?
 
