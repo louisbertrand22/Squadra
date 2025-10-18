@@ -30,7 +30,6 @@
       "package": "com.squadra.app",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.squadra.app",
       "intentFilters": [
         {
           "action": "VIEW",
