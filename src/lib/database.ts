@@ -21,10 +21,8 @@ export const initDatabase = async () => {
       return;
     } catch (error) {
       console.error('Error while waiting for database initialization:', error);
-      // Allow retry if the previous attempt failed
-      if (!db) {
-        console.log('Previous initialization failed, will retry...');
-      }
+      // Previous initialization failed, will fall through to retry
+      console.log('Previous initialization failed, will retry...');
     }
   }
 
@@ -110,7 +108,6 @@ export const initDatabase = async () => {
     } catch (error) {
       console.error('Error initializing database:', error);
       db = null; // Reset db if initialization fails
-      isInitializing = false; // Reset flag on error
       initPromise = null; // Reset promise on error
       throw error;
     } finally {
