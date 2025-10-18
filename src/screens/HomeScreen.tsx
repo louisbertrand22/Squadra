@@ -75,7 +75,11 @@ const HomeScreen: React.FC = () => {
   };
 
   const renderClubItem = ({ item }: { item: Club }) => (
-    <TouchableOpacity style={styles.clubItem} activeOpacity={0.7}>
+    <TouchableOpacity 
+      style={styles.clubItem} 
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate('ClubDetails', { clubId: item.id })}
+    >
       <LinearGradient
         colors={[colors.primary.light, colors.primary.main]}
         start={{ x: 0, y: 0 }}
