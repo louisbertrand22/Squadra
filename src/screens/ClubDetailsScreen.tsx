@@ -173,7 +173,7 @@ const ClubDetailsScreen: React.FC<ClubDetailsScreenProps> = ({ route }) => {
                 </View>
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>
-                    {membership.user?.name || membership.user?.email}
+                    {(membership as any).user?.[0]?.name || (membership as any).user?.[0]?.email || 'Unknown User'}
                   </Text>
                   <View style={styles.roleContainer}>
                     <View style={[
