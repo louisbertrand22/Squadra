@@ -15,8 +15,17 @@ export const initDatabase = async () => {
   // If another initialization is in progress, wait for it
   if (initPromise) {
     console.log('Database initialization already in progress, waiting...');
-    await initPromise;
-    return;
+    try {
+      await initPromise;
+      console.log('Database initialization completed (waited for ongoing initialization)');
+      return;
+    } catch (error) {
+      console.error('Error while waiting for database initialization:', error);
+      // Allow retry if the previous attempt failed
+      if (!db) {
+        console.log('Previous initialization failed, will retry...');
+      }
+    }
   }
 
   // Double-check: prevent concurrent initialization attempts
@@ -24,9 +33,13 @@ export const initDatabase = async () => {
     console.log('Database initialization is starting, waiting...');
     // Wait a bit and check again
     await new Promise(resolve => setTimeout(resolve, 100));
-    if (db) return;
+    if (db) {
+      console.log('Database became available while waiting');
+      return;
+    }
     if (initPromise) {
       await initPromise;
+      console.log('Database initialization completed after wait');
       return;
     }
   }
@@ -43,6 +56,8 @@ export const initDatabase = async () => {
       // The File System Access API on web has stricter constraints
       if (Platform.OS === 'web') {
         console.log('Running on web platform - using careful database initialization');
+        // On web, add a small delay to ensure any previous handles are released
+        await new Promise(resolve => setTimeout(resolve, 50));
       }
       
       db = await SQLite.openDatabaseAsync('squadra.db');
@@ -105,8 +120,10 @@ export const initDatabase = async () => {
 
   try {
     await initPromise;
+    console.log('Database initialization completed successfully');
   } catch (error) {
     // initPromise is already reset in the catch block above
+    console.error('Database initialization failed:', error);
     throw error;
   }
 };
