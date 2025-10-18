@@ -78,7 +78,7 @@ const CreateClubScreen: React.FC = () => {
             placeholderTextColor="#999"
             value={clubName}
             onChangeText={setClubName}
-            autoFocus
+            autoFocus={true}
             editable={!createClubMutation.isPending}
           />
 
