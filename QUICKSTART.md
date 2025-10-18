@@ -43,6 +43,18 @@ npm install
 2. Enable **Email** provider
 3. Save changes
 
+### Configure URL Settings
+
+1. Go to **Authentication** → **URL Configuration**
+2. Set **Site URL** to: `http://localhost:3000`
+3. In **Redirect URLs**, add these URLs:
+   - `http://localhost:3000`
+   - `http://localhost:8081`
+   - `squadra://*`
+4. Click **Save**
+
+*For detailed URL configuration, see [URL_CONFIGURATION.md](URL_CONFIGURATION.md)*
+
 ### Get API Keys
 
 1. Go to **Project Settings** → **API**

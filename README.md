@@ -72,6 +72,7 @@ npm install
    - Anon/Public Key
 3. Go to SQL Editor and run the SQL schema from `src/lib/supabase.ts` (the `DATABASE_SETUP_SQL` constant)
 4. Enable email authentication in Authentication → Providers
+5. Configure authentication URLs (see `SUPABASE_SETUP.md` or `URL_CONFIGURATION.md` for details)
 
 ### 4. Configure Environment Variables
 

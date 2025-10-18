@@ -235,4 +235,32 @@ After running the SQL, verify that:
 3. Configure email templates if desired (optional)
 4. Save changes
 
+## Configure URL Settings
+
+To support both web and mobile authentication, you need to configure redirect URLs:
+
+### Development Setup
+
+1. Go to **Authentication** → **URL Configuration**
+2. Set the **Site URL** to: `http://localhost:3000`
+3. In the **Redirect URLs** section, add the following URLs (click **Add URL** for each):
+   - `http://localhost:3000`
+   - `http://localhost:8081`
+   - `squadra://*`
+   - `exp://YOUR_LOCAL_IP:8081` (replace YOUR_LOCAL_IP with your actual IP shown in Expo terminal)
+4. Click **Save**
+
+### Production Setup
+
+When deploying to production:
+
+1. Update **Site URL** to your production domain: `https://your-app-domain.com`
+2. Update **Redirect URLs** to include:
+   - `https://your-app-domain.com`
+   - `https://your-app-domain.com/**`
+   - `squadra://*`
+3. Click **Save**
+
+**Note:** For detailed explanation of URL configuration for different scenarios, see [URL_CONFIGURATION.md](URL_CONFIGURATION.md)
+
 Your database is now ready for use with Squadra!
