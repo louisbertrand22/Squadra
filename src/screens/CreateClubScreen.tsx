@@ -42,7 +42,7 @@ const CreateClubScreen: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clubs'] });
       Alert.alert('Success', 'Club created successfully!', [
-        { text: 'OK', onPress: () => navigation.goBack() },
+        { text: 'OK', onPress: () => navigation.navigate('Home') },
       ]);
     },
     onError: (error: any) => {
