@@ -16,6 +16,8 @@ const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN || '';
 if (sentryDsn) {
   Sentry.init({
     dsn: sentryDsn,
+    // Use __DEV__ for debug mode (compile-time boolean)
+    // This is correct - __DEV__ is a boolean, not a string from config
     debug: __DEV__,
   });
 }

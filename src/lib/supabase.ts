@@ -1,16 +1,22 @@
 import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { parseBoolean, parseString } from './config';
 
-const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+const SUPABASE_URL = parseString(process.env.EXPO_PUBLIC_SUPABASE_URL, '');
+const SUPABASE_ANON_KEY = parseString(process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY, '');
+
+// Auth configuration - properly converts string values from .env to booleans
+const AUTH_AUTO_REFRESH_TOKEN = parseBoolean(process.env.EXPO_PUBLIC_AUTH_AUTO_REFRESH_TOKEN, true);
+const AUTH_PERSIST_SESSION = parseBoolean(process.env.EXPO_PUBLIC_AUTH_PERSIST_SESSION, true);
+const AUTH_DETECT_SESSION_IN_URL = parseBoolean(process.env.EXPO_PUBLIC_AUTH_DETECT_SESSION_IN_URL, true);
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
+    autoRefreshToken: AUTH_AUTO_REFRESH_TOKEN,
+    persistSession: AUTH_PERSIST_SESSION,
+    detectSessionInUrl: AUTH_DETECT_SESSION_IN_URL,
   },
 });
 
