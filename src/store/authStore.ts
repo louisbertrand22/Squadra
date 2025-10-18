@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { Platform } from 'react-native';
 import * as Linking from 'expo-linking';
 import { supabase } from '../lib/supabase';
 import { AuthState, User } from '../types';
@@ -11,9 +12,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   signInWithEmail: async (email: string) => {
     try {
       set({ loading: true });
-      // Get the dynamic redirect URL for the Expo app
-      const redirectUrl = Linking.createURL('/');
-      console.log('Redirect URL:', redirectUrl);
+      
+      // Get the redirect URL based on platform
+      // Web: use environment variable (e.g., http://localhost:3000 or https://your-domain.com)
+      // Mobile: use custom URL scheme (squadra://)
+      const redirectUrl = Platform.OS === 'web' 
+        ? process.env.EXPO_PUBLIC_AUTH_REDIRECT_URL || undefined
+        : 'squadra://';
       
       const { error } = await supabase.auth.signInWithOtp({
         email,

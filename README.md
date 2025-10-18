@@ -72,7 +72,10 @@ npm install
    - Anon/Public Key
 3. Go to SQL Editor and run the SQL schema from `SUPABASE_SETUP.md`
 4. Enable email authentication in Authentication → Providers
-5. Configure redirect URLs in Authentication → URL Configuration (see `SUPABASE_SETUP.md` for details)
+5. **Configure authentication URLs** - This is crucial for magic link authentication to work!
+   - See [SUPABASE_DASHBOARD_GUIDE.md](SUPABASE_DASHBOARD_GUIDE.md) for step-by-step instructions
+   - See [SUPABASE_URL_EXAMPLES.md](SUPABASE_URL_EXAMPLES.md) for configuration examples
+   - See [URL_CONFIGURATION.md](URL_CONFIGURATION.md) for detailed explanation
 
 ### 4. Configure Environment Variables
 
