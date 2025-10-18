@@ -35,10 +35,19 @@ const queryClient = new QueryClient({
 function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { setUser, setSession, setLoading } = useAuthStore();
+  const initStarted = React.useRef(false);
 
   useEffect(() => {
     async function prepare() {
+      // Prevent multiple initialization attempts (e.g., in React StrictMode)
+      if (initStarted.current) {
+        console.log('App initialization already started, skipping...');
+        return;
+      }
+      initStarted.current = true;
+
       try {
+        console.log('Starting app initialization...');
         // Initialize SQLite database
         await initDatabase();
 

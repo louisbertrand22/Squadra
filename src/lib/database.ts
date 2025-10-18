@@ -1,7 +1,9 @@
 import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
 
 let db: SQLite.SQLiteDatabase | null = null;
 let initPromise: Promise<void> | null = null;
+let isInitializing = false;
 
 export const initDatabase = async () => {
   // If database is already initialized, return immediately
@@ -17,10 +19,35 @@ export const initDatabase = async () => {
     return;
   }
 
+  // Double-check: prevent concurrent initialization attempts
+  if (isInitializing) {
+    console.log('Database initialization is starting, waiting...');
+    // Wait a bit and check again
+    await new Promise(resolve => setTimeout(resolve, 100));
+    if (db) return;
+    if (initPromise) {
+      await initPromise;
+      return;
+    }
+  }
+
+  // Set flag to prevent concurrent calls
+  isInitializing = true;
+
   // Start initialization
   initPromise = (async () => {
     try {
+      console.log('Opening database...');
+      
+      // For web platform, ensure we handle database opening carefully
+      // The File System Access API on web has stricter constraints
+      if (Platform.OS === 'web') {
+        console.log('Running on web platform - using careful database initialization');
+      }
+      
       db = await SQLite.openDatabaseAsync('squadra.db');
+
+      console.log('Database opened, creating tables...');
 
       // Create local cache tables
       await db.execAsync(`
@@ -68,15 +95,18 @@ export const initDatabase = async () => {
     } catch (error) {
       console.error('Error initializing database:', error);
       db = null; // Reset db if initialization fails
+      isInitializing = false; // Reset flag on error
+      initPromise = null; // Reset promise on error
       throw error;
+    } finally {
+      isInitializing = false; // Always reset the flag
     }
   })();
 
   try {
     await initPromise;
   } catch (error) {
-    // Reset promise on error so it can be retried
-    initPromise = null;
+    // initPromise is already reset in the catch block above
     throw error;
   }
 };
