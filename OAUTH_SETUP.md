@@ -16,7 +16,7 @@ The `authStore.ts` automatically generates the correct redirect URL at runtime:
 ```typescript
 const redirectUrl = Linking.createURL('/');
 // Examples:
-// - Expo Go: exp://192.168.1.28:8081
+// - Expo Go: exp://[YOUR-LOCAL-IP]:8081
 // - Web: http://localhost:8081
 // - Production: squadra://
 ```
@@ -120,7 +120,7 @@ await signInWithOAuth('apple');   // Apple
 ### In Development (Expo Go):
 
 1. Start your Expo development server: `npm start`
-2. Note the local IP address shown (e.g., `exp://192.168.1.28:8081`)
+2. Note the local IP address shown (e.g., `exp://[YOUR-LOCAL-IP]:8081`)
 3. Make sure this URL is added to Supabase redirect URLs
 4. Tap the OAuth button in the app
 5. Complete authentication in the browser/provider
